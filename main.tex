@@ -9,9 +9,10 @@
 \usepackage[capitalize]{cleveref}
 \usepackage{import}
 
-\newcommand{\todoA}[1]{\todo[inline,color=green!30!white]{Alex: #1}}
-\newcommand{\todoE}[1]{\todo[inline,color=red!30!white]{Emily: #1}}
-\newcommand{\todoComment}[1]{\todo[inline,color=blue!30!white]{Comment: #1}}
+\newcommand{\todoMax}[1]{\todo[inline,color=green!30!white]{Max: #1}}
+\newcommand{\todoEmily}[1]{\todo[inline,color=red!30!white]{Emily: #1}}
+\newcommand{\todoGeoff}[1]{\todo[inline,color=blue!30!white]{Geoff: #1}}
+\newcommand{\todoPaul}[1]{\todo[inline,color=purple!30!white]{Paul: #1}}
 
 \title{Urban Science FY18 Q1 technical report}
 \author{Urban Analytics Lab}
@@ -23,22 +24,33 @@
 
 \maketitle
 \begin{abstract}
-
+\todoGeoff{Geoff section}
 \end{abstract}
 
 \section{Introduction}
-\import{sections/}{intro_1.tex}
+\import{sections/}{1_intro.tex}
+\todoPaul{Paul leads, all contribute individual paragraphs on request}
 
 \section{Long-term land use model: UrbanSim}
-\import{sections/}{urbansim_2.tex}
+\import{sections/}{2_urbansim.tex}
+\todoPaul{Paul section - should be able to recycle content}
 
-%\section{Short-term travel demand model: ActivitySim}
+\section{Short-term travel demand model: ActivitySim}
+\import{sections/}{3_activitysim.tex}
+\todoMax{Max section}
 
-%\section{Network}
+\section{Network}
+\import{sections/}{4_network.tex}
+\todoGeoff{Geoff section}
 
-%\section{Static user equilibrium traffic assignment model}
+\section{Static user equilibrium traffic assignment model}
+\import{sections/}{5_ta.tex}
+\todoEmily{Emily section}
 
-%\section{Conclusion}
+\section{Conclusion}
+\import{sections/}{6_conclusion.tex}
+\todoGeoff{[Geoff leads, all contribute individual paragraphs on request]}
+\todoEmily{Energy connection subsection}
 
 
 \end{document}
