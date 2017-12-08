@@ -18,17 +18,11 @@ This brings us to a second broad theme: interventions are rarely coordinated wit
 
 UrbanSim was designed to attempt to reflect the interdependencies in dynamic urban systems, focusing on the real estate market and the transportation system, initially, and on the effects of individual interventions, and combinations of them, on patterns of development, travel demand, and household and firm location.  Some goals that have shaped the design of UrbanSim, and some that have emerged through the past several years of seeing it tested in the real world, are the following:
 
-Outcome Goals:
-
+\bigskip
 \squishlist
 \item Enable a wide variety of stakeholders (planners, public agencies, citizens and advocacy groups) to explore the potential consequences of alternative public policies and investments using credible, unbiased analysis.
 \item Facilitate more effective democratic deliberation on contentious public actions regarding land use, housing, transportation and the environment, informed by the potential consequences of alternative courses of action that include long-term cumulative effects on the environment, and distributional equity considerations.
 \item Make it easier for communities to achieve a common vision for the future of the community and its broader environment, and to coordinate their actions to produce outcomes that are consistent with this vision.
-\squishend
-
-Implementation Goals for UrbanSim:
-
-\squishlist
 \item Create an analytical capacity to model the cause and effect interactions within local urban systems that are sufficiently accurate and sensitive to policy interventions to be a credible source for informing deliberations.
 \item Make the model system credible by avoiding bias in the models though simplifying assumptions that obscure or omit important cause-effect linkages at a level of detail needed to address stakeholder concerns. Note that this is particularly relevant for housing policies: most urban models do not even directly represent rental and ownership components of the housing market separately, and none other than UrbanSim work at a microsimulation level representing individual persons and households, and individual parcels, buildings and even housing units within buildings.
 \item Make the model design behaviorally clear in terms of representing agents, actions, and cause - effect interactions in ways that can be understood by non-technical stakeholders, while making the statistical methods used to implement the model scientifically robust.
@@ -37,6 +31,7 @@ Implementation Goals for UrbanSim:
 \item Test the system extensively and repeatedly, and continually improve it by incorporating lessons learned from applications, and from new advances in methods for modeling, statistical analysis, and software development.
 \squishend
 
+\bigskip
 The original design of UrbanSim adopted several elements to address these implementation goals, and these have remained foundational in the development of the system over time.  These design elements include:
 
 \squishlist
@@ -49,6 +44,7 @@ The original design of UrbanSim adopted several elements to address these implem
 \item   The adoption of an Open Source licensing for the software, written originally in Java, and recently reimplemented using the Python language with extensive use of numerical libraries implemented in C or C++ for computational performance.
 \squishend
 
+\bigskip
 The key features of the UrbanSim model and its software implementation are highlighted in Table \ref{tab:key-features}.  The model departs from prior operational land use models based on cross-sectional, equilibrium, aggregate approaches to adopt an approach that models individual households, jobs, buildings and parcels (or census blocks or zones), and their changes from one year to the next as a consequence of economic changes, policy interventions, and market interactions .
 
 \begin{table}[htp]
@@ -57,7 +53,7 @@ The key features of the UrbanSim model and its software implementation are highl
 \begin{center}
 \begin{tabular}{ p{1.5in}  p{4.4in}  }
 \toprule[1.5pt]
-\multirow{8}{1.5in}{Key Features of the UrbanSim
+\multirow[c]{10}{1.5in}{Key Features of the UrbanSim
 Model System} &  $\bullet$   The model simulates the key decision makers and
 choices impacting urban development; in particular, the mobility and
 location choices of households and businesses, and the development
@@ -81,7 +77,7 @@ choices of developers\\
 %\cmidrule{2-2}
 & $\bullet$    The model presently addresses both new development and redevelopment, using parcel-level detail\\
 \midrule
-\multirow{8}{1,5in}{Key Features of the UrbanSim Software Implementation}
+\multirow[c]{3}{1.5in}{Key Features of the UrbanSim Software Implementation}
 &  $\bullet$   The model system runs on the cloud and uses a web browser for the User Interface\\
 %\cmidrule{2-2}
 & $\bullet$  The UrbanSim model system software is Open Source, at https://github.com/UDST/urbansim\\
@@ -235,7 +231,7 @@ real estate.
 
 \begin{figure}[h]
 \center
- \includegraphics[width=4in]{graphics/ParcelEmploymentModel.png}
+ \includegraphics[width=5in]{graphics/ParcelEmploymentModel.png}
 \caption{UrbanSim Model Flow: Employment Focus}
 \label{fig:employment-models}
 \end{figure}
@@ -246,7 +242,7 @@ UrbanSim predicts the evolution of these entities and their characteristics over
 
 \begin{figure}[h]
 \center
- \includegraphics[width=4in]{graphics/ParcelHouseholdModel.png}
+ \includegraphics[width=5in]{graphics/ParcelHouseholdModel.png}
 \caption{UrbanSim Model Flow: Household Focus}
 \label{fig:household-models}
 \end{figure}
@@ -256,7 +252,7 @@ The data inputs and outputs for operating the UrbanSim model are shown in Table 
 
 \begin{figure}[h]
 \center
- \includegraphics[width=5.0in]{graphics/ParcelRealEstateModel.png}
+ \includegraphics[width=6.0in]{graphics/ParcelRealEstateModel.png}
 \caption{UrbanSim Model Flow: Real Estate Focus}
 \label{fig:parcel-models}
 \end{figure}
