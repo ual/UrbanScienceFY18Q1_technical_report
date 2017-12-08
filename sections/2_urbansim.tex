@@ -1,7 +1,4 @@
 \subsection{Overview}
-\section{UrbanSim Overview}
-
-\subsection{Design Objectives and Key Features}
 
 UrbanSim is an urban simulation system designed to inform deliberation on public choices with
 long-term, significant impacts.  A key motivation 
@@ -217,10 +214,34 @@ When models are applied at any geography larger than the parcel, such as census 
 
 
 
+\begin{figure}[h]
+\center
+ \includegraphics[width=4in]{graphics/ParcelEmploymentModel.png}
+\caption{UrbanSim Model Flow: Employment Focus}
+\label{fig:employment-models}
+\end{figure}
+%\clearpage
 
 The components of UrbanSim are models acting on the objects in Figures Figures \ref{fig:employment-models}, \ref{fig:household-models}, and \ref{fig:parcel-models}, simulating the real-world actions of agents acting in the urban system.  Developers construct new buildings or redevelop existing ones.  Buildings are located on land parcels that have particular characteristics such as value, land use, slope, and other environmental characteristics.  Governments set policies that regulate the use of land, through the imposition of land use plans, urban growth boundaries, environmental regulations, or through pricing policies such as development impact fees.  Governments also build infrastructure, including transportation infrastructure, which interacts with the distribution of activities to generate patterns of accessibility at different locations that in turn influence the attractiveness of these sites for different consumers.  Households have particular characteristics that may influence their preferences and demands for housing of different types at different locations.  Businesses also have preferences that vary by industry and size of business (number of employees) for alternative building types and locations.
 
 
+
+\begin{figure}[h]
+\center
+ \includegraphics[width=4in]{graphics/ParcelHouseholdModel.png}
+\caption{UrbanSim Model Flow: Household Focus}
+\label{fig:household-models}
+\end{figure}
+%\clearpage
+
+
+\begin{figure}[h]
+\center
+ \includegraphics[width=5.0in]{graphics/ParcelRealEstateModel.png}
+\caption{UrbanSim Model Flow: Real Estate Focus}
+\label{fig:parcel-models}
+\end{figure}
+%\clearpage
 
 The model
 system contains a large number of components, so in order to make the illustrations clearer,
@@ -229,35 +250,9 @@ flow of information related to jobs.  Figure \ref{fig:household-models} provides
 view of the model system.  Finally, Figure \ref{fig:parcel-models} provides a view with a focus on
 real estate.
 
-\begin{figure}[h]
-\center
- \includegraphics[width=5in]{graphics/ParcelEmploymentModel.png}
-\caption{UrbanSim Model Flow: Employment Focus}
-\label{fig:employment-models}
-\end{figure}
-%\clearpage
-
 UrbanSim predicts the evolution of these entities and their characteristics over time, using annual steps to predict the movement and location choices of businesses and households, the development activities of developers, and the impacts of governmental policies and infrastructure choices.  The land use model is interfaced with a metropolitan travel model system to deal with the interactions of land use and transportation. Access to opportunities, such as employment or shopping, are measured by the travel time or cost of accessing these opportunities via all available modes of travel.
 
-
-\begin{figure}[h]
-\center
- \includegraphics[width=5in]{graphics/ParcelHouseholdModel.png}
-\caption{UrbanSim Model Flow: Household Focus}
-\label{fig:household-models}
-\end{figure}
-\clearpage
-
 The data inputs and outputs for operating the UrbanSim model are shown in Table \ref{tab:inputs-outputs}.  Once the database is compiled, the model equations must be estimated using local data, and the full model system must be calibrated.  A final step before actual use of the model is a validation process that tests the operation of the model over time and makes adjustments to the dynamic components of the model.  
-
-\begin{figure}[h]
-\center
- \includegraphics[width=6.0in]{graphics/ParcelRealEstateModel.png}
-\caption{UrbanSim Model Flow: Real Estate Focus}
-\label{fig:parcel-models}
-\end{figure}
-
-
 
 \begin{table}[htp]
 \caption{Data Inputs and Outputs of UrbanSim}
