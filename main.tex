@@ -3,17 +3,20 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage{hyperref}
-\usepackage{amsthm, amssymb,amsmath}
+\usepackage{amsthm, amssymb, amsmath}
 \usepackage{mathtools}
 \usepackage{todonotes}
-\usepackage{caption}
 \usepackage{dsfont}
 \usepackage[capitalize]{cleveref}
 \usepackage{import}
-\usepackage{amsmath, graphics, graphicx, subfigure,url,array,longtable, harvard,
-rotating, upquote, makeidx,booktabs,graphicx}
-\usepackage{color, fancyhdr, longtable, epsfig,lscape,
-booktabs,multirow, listings}
+\usepackage{amsmath, graphics, graphicx, subfigure, url, array, longtable}
+\usepackage{harvard, rotating, upquote, makeidx, booktabs, graphicx}
+\usepackage{color, fancyhdr, longtable, epsfig, lscape, booktabs, multirow, listings}
+
+\usepackage[backend=biber,style=authoryear,natbib=true,url=true,doi=true]{biblatex}
+\addbibresource{references.bib}
+\addbibresource{refs-network.bib}
+
 
 \newcommand{\todoMax}[1]{\todo[inline,color=green!30!white]{Max: #1}}
 \newcommand{\todoEmily}[1]{\todo[inline,color=red!30!white]{Emily: #1}}
@@ -38,14 +41,7 @@ booktabs,multirow, listings}
 \newcommand{\squishend}{
     \end{list}  }
 
-\usepackage[
-backend=biber,
-style=alphabetic,
-sorting=ynt
-]{biblatex}
- 
-\addbibresource{references.bib}
-\addbibresource{refs-network.bib}
+
 
 \title{Urban Science FY18 Q1 Technical Report}
 \author{Paul Waddell, Geoff Boeing, Max Gardner and Emily Porter\\
@@ -83,11 +79,8 @@ Urban Analytics Lab}
 
 \section{Conclusion}
 \todoGeoff{[Geoff leads, all contribute individual paragraphs on request]}
-\todoEmily{Energy connection subsection}
 \import{sections/}{6_conclusion.tex}
 
-
-\bibliographystyle{agsm}
 
 % put the bibliography into the table of contents
 \clearpage

@@ -1,16 +1,16 @@
 \subsection{Overview}
 
-Once we have produced this synthetic travel demand data, we model a circulation network for traffic assignment. Our integrated pipeline models networks as mathematical graphs consisting of a set of nodes \textit{N} connected to one another by a set of edges \textit{E} \cite{newman_networks:_2010,gastner_spatial_2006}. Specifically, the road network is modeled as a nonplanar directed multigraph with possible self-loops. The data come from OpenStreetMap. This section describes how we acquire these data, construct the network, process its toplogy, and calculate and impute relevant variables. Next it explains the process of converting the zone-based travel demand output from ActivitySim to a network node-based demand data set. Finally, it describes the process of calculating BPR coefficients and the assumptions baked into this calculation.
+Once we have produced this synthetic travel demand data, we model the regional circulation network for traffic assignment. Our integrated pipeline models networks as mathematical graphs consisting of a set of nodes \textit{N} connected to one another by a set of edges \textit{E} \cite{newman_networks:_2010,gastner_spatial_2006}. Specifically, the road network is modeled as a nonplanar directed multigraph with possible self-loops. The data come from OpenStreetMap. This section describes how we acquire these data, construct the network, process its toplogy, and calculate and impute relevant variables. Next it describes the process of calculating BPR coefficients and the assumptions baked into this calculation. Finally, it explains the process of converting the zone-based travel demand output from ActivitySim to a network node-based demand data set. 
 
 \subsection{Network creation, construction, and processing}
 
-The network data in this modeling pipeline come from OpenStreetMap. OpenStreetMap is a public worldwide collaborative mapping project and web platform with over two million users \cite{}. Anyone may edit or access OpenStreetMap data, but community oversight and standards exist to prevent significant vandalism or inaccurate edits \cite{jokar_arsanjani_openstreetmap_2015}. In general, OpenStreetMap data are of high accuracy and quality, particularly in the United States and Western Europe \cite{corcoran_analysing_2013,over_generating_2010,haklay_how_2010,maron_how_2015}. OpenStreetMap imported the 2005 TIGER/Line roads data set as a foundation, and numerous corrections and additions to these data have been made since \cite{willis_openstreetmap_2008}.
+The network data in this modeling pipeline come from OpenStreetMap. OpenStreetMap is a public worldwide collaborative mapping project and web platform with over two million users. Anyone may edit or access OpenStreetMap data, but community oversight and standards exist to prevent significant vandalism or inaccurate edits \cite{jokar_arsanjani_openstreetmap_2015}. In general, OpenStreetMap data are of high accuracy and quality, particularly in the United States and Western Europe \cite{corcoran_analysing_2013,over_generating_2010,haklay_how_2010,maron_how_2015}. OpenStreetMap imported the 2005 TIGER/Line roads data set as a foundation, and numerous corrections and additions to these data have been made since \cite{willis_openstreetmap_2008}.
 
 The network is created using OSMnx, an open-source Python package for working with OpenStreetMap data \cite{boeing_osmnx:_2017}. OSMnx is built on top of NetworkX, a Python package for network analysis developed by researchers at Los Alamos National Laboratory. OSMnx extends NetworkX's network analysis capabilities by working explicitly with spatial infrastructure networks and interfacing with OpenStreetMap's various APIs. It can automatically construct topologically-corrected nonplanar directed multigraphs constrained to any polygonal boundaries for anywhere in the world from OpenStreetMap data. OSMnx uses a multistep algorithm to simplify the topology of the graph so that it retains nodes only at intersections and dead-ends, as well as the full geometry of the simplified edges, as shown in Figure \ref{fig:simplification_before_after}.
 
-\begin{figure}[htp]
+\begin{figure}[ht]
 \center
-\includegraphics[width=6.5in]
+\includegraphics[width=\textwidth]
 {graphics/simplification_before_after.png}
 \caption{A suburban street network from OpenStreetMap data before OSMnx topology simplification (left) and after (right), with nodes in black and edges in gray.}
 \label{fig:simplification_before_after}
@@ -18,11 +18,11 @@ The network is created using OSMnx, an open-source Python package for working wi
 
 We use OSMnx to download the road network for the nine-county San Francisco Bay Area. We use the 2016 US Census Bureau TIGER/Line shapefile of United States counties to define the spatial extents of these nine counties: Alameda, Contra Costa, Marin, Napa, San Francisco, San Mateo, Santa Clara, Solano, and Sonoma. We use a convex hull around these geometries to get a single polygon for the spatial query – this prevents the query from discarding any network elements that fall within our study area but outside of a county's borders (for example, bridges over the San Francisco Bay).
 
-Next, we use OSMnx to download the drivable road network within this convex hull. OSMnx uses detailed metadata tags to identify which paths are drivable. It then constructs it into a graph. This initial graph contains 1.2 million nodes and 2.3 million edges. Next we filter the road network to retain only tertiary roads and larger. In OpenStreetMap terminology, the road types we retain comprise: motorway, motorway\textunderscore link, trunk, trunk\textunderscore link, primary, primary\textunderscore link, secondary, secondary\textunderscore link, tertiary, tertiary\textunderscore link, unclassified, and road. The "link" types are necessary to retain the connectors (such as on-ramps and off-ramps) between certain roads. The "road" type is standardly used in the OpenStreetMap community as a null value. The "unclassified" type technically refers to the British-style roads hierarchy, in which "unclassified" is the level below "tertiary" – that is, quaternary. However, it sometimes is used inconsistently in the United States, so we retain it for completeness.
+Next, we use OSMnx to download the drivable road network within this convex hull. OSMnx uses detailed metadata tags to identify which paths are drivable. It then constructs it into a graph. This initial graph contains 1.2 million nodes and 2.3 million edges. Next we filter the road network to retain only tertiary roads and larger. In OpenStreetMap terminology, the road types we retain comprise: motorway, motorway\textunderscore link, trunk, trunk\textunderscore link, primary, primary\textunderscore link, secondary, secondary\textunderscore link, tertiary, tertiary\textunderscore link, unclassified, and road. The \enquote{link} types are necessary to retain the connectors (such as on-ramps and off-ramps) between certain roads. The \enquote{road} type is standardly used in the OpenStreetMap community as a null value. The \enquote{unclassified} type technically refers to the British-style roads hierarchy, in which \enquote{unclassified} is the level below \enquote{tertiary} – that is, quaternary. However, it sometimes is used inconsistently in the United States, so we retain it for completeness.
 
-\begin{figure}[htp]
+\begin{figure}[ht]
 \center
-\includegraphics[width=5in]
+\includegraphics[width=\textwidth]
 {graphics/bay_area_network.png}
 \caption{The nine-county San Francisco Bay Area road network used in our modeling pipeline, created by OSMnx from OpenStreetMap data.}
 \label{fig:bay_area_road_network}
@@ -96,7 +96,7 @@ where:
 \bigskip
 Next, we infer each edge's vehicle capacity (per lane per hour) from a lookup table via edge type and number of lanes (see Table \ref{table:capacity_defaults}). We then convert this capacity per lane per hour value to units of capacity per edge per second. Finally, we use these data to calculate the values of the $a0$ and $a4$ coefficients for the BPR curve. These calculations demand a caveat: due to missing data on OpenStreetMap, we are forced to infer or impute variables on many edges. Our assumptions on parameter values and capacity and speed limit defaults propagate through to our BPR coefficients.
 
-\begin{table}
+\begin{table}[ht]
 \centering
 \caption{Free-flow speed defaults by edge type and number of lanes, in units of miles per hour.}
 \label{table:free_flow_speed_defaults}
@@ -120,7 +120,7 @@ Next, we infer each edge's vehicle capacity (per lane per hour) from a lookup ta
 \end{tabular}
 \end{table}
 
-\begin{table}
+\begin{table}[ht]
 \centering
 \caption{Capacity defaults by edge type and number of lanes, in units of vehicles per lane per hour.}
 \label{table:capacity_defaults}
@@ -144,7 +144,7 @@ Next, we infer each edge's vehicle capacity (per lane per hour) from a lookup ta
 \end{tabular}
 \end{table}
 
-\subsection{Linking zone-based travel demand with the network}
+\subsection{Linking zone-based travel demand to the network}
 
 The ActivitySim component of our integrated modeling pipeline produces an output dataset of zone-to-zone travel demand data. To model this travel demand (and in turn traffic assignment) on our road network, we must convert the trip origins and destinations from zones to network nodes.
 
@@ -152,7 +152,7 @@ We use the shapefile of Traffic Analysis Zones (TAZs) from the Bay Area Metropol
 
 \bigskip
 \begin{equation}
-    \delta_g_c = r\cdot arccos(\sin{\Phi_1} \sin{\Phi_2} + \cos{\Phi_1} \cos{\Phi_2} \cos{|\lambda_1 - \lambda_2|})
+    \delta_{gc} = r\cdot arccos(\sin{\Phi_1} \sin{\Phi_2} + \cos{\Phi_1} \cos{\Phi_2} \cos{|\lambda_1 - \lambda_2|})
     \label{eq:haversine_formula}
 \end{equation}
 
@@ -161,7 +161,7 @@ where:
 
 \bigskip
 \begin{itemize}
-    \item $\delta_g_c$ represents the great-circle distance between the two points
+    \item $\delta_{gc}$ represents the great-circle distance between the two points
     \item $r$ represents the radius of the Earth, in meters
     \item $\Phi_1$ and $\Phi_2$ represent the geographical latitudes of the two points, in radians
     \item $\lambda_1$ and $\lambda_2$ represent the geographical longitudes of the two points, in radians
@@ -169,4 +169,3 @@ where:
 
 \bigskip
 Now that we have the road network, its per-edge BPR coefficients, and node-based travel demand data, we are ready to model traffic assignment.
-    
