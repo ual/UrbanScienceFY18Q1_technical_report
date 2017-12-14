@@ -1,22 +1,35 @@
-\documentclass[onecolumn,12pt]{IEEEtran}
-%\documentclass[12pt]{article}
+%\documentclass[onecolumn,12pt]{IEEEtran}
+\documentclass{report}
 
 \usepackage[utf8]{inputenc}
-\usepackage{hyperref}
 \usepackage{amsthm, amssymb, amsmath}
-\usepackage{mathtools}
-\usepackage{todonotes}
+\usepackage{array}
+\usepackage{authblk}
+\usepackage{booktabs}
+\usepackage{color}
 \usepackage{dsfont}
-\usepackage[capitalize]{cleveref}
+\usepackage{epsfig}
+\usepackage{fancyhdr}
+\usepackage{graphics, graphicx}
+\usepackage{harvard}
+\usepackage{hyperref}
 \usepackage{import}
-\usepackage{amsmath, graphics, graphicx, subfigure, url, array, longtable}
-\usepackage{harvard, rotating, upquote, makeidx, booktabs, graphicx}
-\usepackage{color, fancyhdr, longtable, epsfig, lscape, booktabs, multirow, listings}
-
+\usepackage{listings}
+\usepackage{lscape}
+\usepackage{longtable}
+\usepackage{makeidx}
+\usepackage{mathtools}
+\usepackage{multirow}
+\usepackage{rotating}
+\usepackage{subfigure}
+\usepackage{todonotes}
+\usepackage{upquote}
+\usepackage{enumitem}
+\usepackage{url}
+\usepackage[capitalize]{cleveref}
 \usepackage[backend=biber,style=authoryear,natbib=true,url=true,doi=true]{biblatex}
 \addbibresource{references.bib}
 \addbibresource{refs-network.bib}
-
 
 \newcommand{\todoMax}[1]{\todo[inline,color=green!30!white]{Max: #1}}
 \newcommand{\todoEmily}[1]{\todo[inline,color=red!30!white]{Emily: #1}}
@@ -43,9 +56,15 @@
 
 
 
-\title{Urban Science FY18 Q1 Technical Report}
-\author{Paul Waddell, Geoff Boeing, Max Gardner and Emily Porter\\
-Urban Analytics Lab}
+\title{An Integrated Pipeline Architecture for Modeling Urban Land Use, Travel Demand, and Traffic Assignment}
+
+\author[1]{Paul Waddell}
+\author[1]{Geoff Boeing}
+\author[2]{Max Gardner}
+\author[2]{Emily Porter}
+\affil[1]{Department of City and Regional Planning, University of California, Berkeley}
+\affil[2]{Department of Civil and Environmental Engineering, University of California, Berkeley}
+
 \date{December 2017}
 
 
@@ -53,8 +72,10 @@ Urban Analytics Lab}
 \begin{document}
 
 \maketitle
+
 \begin{abstract}
-\todoGeoff{Geoff section}
+This technical report constitutes the FY18 Q1 deliverable for the U.S. Department of Energy SMART Mobility Urban Science Pillar task 2.2.2.2018: Coupling Land Use Models and Network Flow Models. Integrating land use, travel demand, and traffic models represents a gold standard for regional planning, but is rarely achieved in a meaningful way, especially at the scale of disaggregate data. In this report, we present a new pipeline architecture for integrated modeling of urban land use, travel demand, and traffic assignment. Our land use model, UrbanSim, is an open-source microsimulation platform used by metropolitan planning organizations worldwide for modeling the growth and development of cities over long ($\sim$30 year) time horizons. UrbanSim is particularly powerful as a scenario analysis tool, enabling planners to compare and contrast the impacts of different policy decisions on long term land use forecasts in a statistically rigorous way. Our travel demand model, ActivitySim, is an agent-based modeling platform that produces synthetic origin--destination travel demand data. Finally, we use a static user equilibrium traffic assignment model based on the Frank Wolfe algorithm to assign vehicles to specific network paths to make trips between these origins and destinations. This traffic assignment model runs in a high-performance computing environment. The resulting congested travel time data can then be fed back into UrbanSim and ActivitySim for the next model run. This report introduces this research area, describes this project's achievements so far in developing this integrated pipeline, and presents an upcoming research agenda.
+
 \end{abstract}
 
 \section{Introduction}
@@ -73,7 +94,7 @@ Urban Analytics Lab}
 \todoGeoff{Geoff section}
 \import{sections/}{4_network.tex}
 
-\section{Static user equilibrium traffic assignment model}
+\section{Traffic assignment model: static user equilibrium}
 \todoEmily{Emily section}
 \import{sections/}{5_ta.tex}
 

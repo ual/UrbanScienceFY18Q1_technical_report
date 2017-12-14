@@ -1,18 +1,18 @@
-\subsection{Overview}
+\subsection{Overview}\label{network}
 
-Once we have produced this synthetic travel demand data, we model the regional circulation network for traffic assignment. Our integrated pipeline models networks as mathematical graphs consisting of a set of nodes \textit{N} connected to one another by a set of edges \textit{E} \cite{newman_networks:_2010,gastner_spatial_2006}. Specifically, the road network is modeled as a nonplanar directed multigraph with possible self-loops. The data come from OpenStreetMap. This section describes how we acquire these data, construct the network, process its toplogy, and calculate and impute relevant variables. Next it describes the process of calculating BPR coefficients and the assumptions baked into this calculation. Finally, it explains the process of converting the zone-based travel demand output from ActivitySim to a network node-based demand data set. 
+Once we have produced this synthetic travel demand data, we model the regional circulation network for traffic assignment. Our integrated pipeline models networks as mathematical graphs consisting of a set of nodes \textit{N} connected to one another by a set of edges \textit{E} \citep{newman_networks:_2010,gastner_spatial_2006}. Specifically, the road network is modeled as a nonplanar directed multigraph with possible self-loops. The data come from OpenStreetMap. This section describes how we acquire these data, construct the network, process its toplogy, and calculate and impute relevant variables. Next it describes the process of calculating BPR coefficients and the assumptions baked into this calculation. Finally, it explains the process of converting the zone-based travel demand output from ActivitySim to a network node-based demand data set. 
 
 \subsection{Network creation, construction, and processing}
 
-The network data in this modeling pipeline come from OpenStreetMap. OpenStreetMap is a public worldwide collaborative mapping project and web platform with over two million users. Anyone may edit or access OpenStreetMap data, but community oversight and standards exist to prevent significant vandalism or inaccurate edits \cite{jokar_arsanjani_openstreetmap_2015}. In general, OpenStreetMap data are of high accuracy and quality, particularly in the United States and Western Europe \cite{corcoran_analysing_2013,over_generating_2010,haklay_how_2010,maron_how_2015}. OpenStreetMap imported the 2005 TIGER/Line roads data set as a foundation, and numerous corrections and additions to these data have been made since \cite{willis_openstreetmap_2008}.
+The network data in this modeling pipeline come from OpenStreetMap. OpenStreetMap is a public worldwide collaborative mapping project and web platform with over two million users. Anyone may edit or access OpenStreetMap data, but community oversight and standards exist to prevent significant vandalism or inaccurate edits \citep{jokar_arsanjani_openstreetmap_2015}. In general, OpenStreetMap data are of high accuracy and quality, particularly in the United States and Western Europe \citep{corcoran_analysing_2013,over_generating_2010,haklay_how_2010,maron_how_2015}. OpenStreetMap imported the 2005 TIGER/Line roads data set as a foundation, and numerous corrections and additions to these data have been made since \citep{willis_openstreetmap_2008}.
 
-The network is created using OSMnx, an open-source Python package for working with OpenStreetMap data \cite{boeing_osmnx:_2017}. OSMnx is built on top of NetworkX, a Python package for network analysis developed by researchers at Los Alamos National Laboratory. OSMnx extends NetworkX's network analysis capabilities by working explicitly with spatial infrastructure networks and interfacing with OpenStreetMap's various APIs. It can automatically construct topologically-corrected nonplanar directed multigraphs constrained to any polygonal boundaries for anywhere in the world from OpenStreetMap data. OSMnx uses a multistep algorithm to simplify the topology of the graph so that it retains nodes only at intersections and dead-ends, as well as the full geometry of the simplified edges, as shown in Figure \ref{fig:simplification_before_after}.
+The network is created using OSMnx, an open-source Python package for working with OpenStreetMap data \citep{boeing_osmnx:_2017}. OSMnx is built on top of NetworkX, a Python package for network analysis developed by researchers at Los Alamos National Laboratory. OSMnx extends NetworkX's network analysis capabilities by working explicitly with spatial infrastructure networks and interfacing with OpenStreetMap's various APIs. It can automatically construct topologically-corrected nonplanar directed multigraphs constrained to any polygonal boundaries for anywhere in the world from OpenStreetMap data. OSMnx uses a multistep algorithm to simplify the topology of the graph so that it retains nodes only at intersections and dead-ends, as well as the full geometry of the simplified edges, as shown in Figure \ref{fig:simplification_before_after}.
 
 \begin{figure}[ht]
 \center
 \includegraphics[width=\textwidth]
 {graphics/simplification_before_after.png}
-\caption{A suburban street network from OpenStreetMap data before OSMnx topology simplification (left) and after (right), with nodes in black and edges in gray.}
+\caption{A suburban street network from OpenStreetMap data before OSMnx topology simplification (left) and after (right), with nodes in black and edges in gray. Note that the full spatial geometry is retained as edge metadata even though the edge itself is compressed to a single pair of origin and destination nodes.}
 \label{fig:simplification_before_after}
 \end{figure}
 
@@ -22,7 +22,7 @@ Next, we use OSMnx to download the drivable road network within this convex hull
 
 \begin{figure}[ht]
 \center
-\includegraphics[width=\textwidth]
+\includegraphics[width=0.7\textwidth]
 {graphics/bay_area_network.png}
 \caption{The nine-county San Francisco Bay Area road network used in our modeling pipeline, created by OSMnx from OpenStreetMap data.}
 \label{fig:bay_area_road_network}
@@ -31,7 +31,8 @@ Next, we use OSMnx to download the drivable road network within this convex hull
 After filtering out all edges not of these major types, we remove all isolated nodes then keep only the largest weakly connected component of the graph. Finally, we simplify the graph using OSMnx then save it to disk as a GraphML file. GraphML is a standard, XML-based file format for storing and exchanging complete graph structure data. Our final graph contains 31,000 nodes and 66,000 directed edges representing 20,000 kilometers of roads across 9 counties, as seen in Figure \ref{fig:bay_area_road_network}.
 
 \subsection{BPR coefficients calculation and assumptions}
-
+\todoEmily{explain what BPR are}
+\todoEmily{explain the BPR coefficients in either narrative or math}
 Once we have the final processed graph of the Bay Area road network, we calculate the BPR (Bureau of Public Roads) curves' coefficients $a_0$, $a_1$, $a_2$, $a_3$, and $a_4$ for it. The BPR function is defined as:
 
 \bigskip
@@ -49,12 +50,12 @@ where:
     \item $t0_i$ represents the free-flow travel time on edge $i$
     \item $v_i$ represents the volume of traffic on edge $i$ per unit of time (flow attempting to use edge $i$)
     \item $c_i$ represents the capacity of edge $i$ per unit of time
-    \item $\alpha$ represents alpha parameter
+    \item $\alpha$ represents the alpha parameter
     \item $\beta$ represents the beta parameter, the exponent of the power function
 \end{itemize}
 
 \bigskip
-The alpha parameter was assigned a value of 0.15 in the original BPR curve, and the beta parameter was assigned a value of 4 in the original BPR curve. We adopt these default alpha and beta parameter values in this integrated modeling pipeline, but note that they are not the only way to parameterize this function. For instance, TRB's NHCRP Report 716: Travel Demand Forecasting Parameters and Techniques (p. 75) provides various coefficients estimated using the 1985 Highway Capacity Manual.
+The alpha parameter was assigned a value of 0.15 in the original BPR curve, and the beta parameter was assigned a value of 4 in the original BPR curve. We adopt these default alpha and beta parameter values in this integrated modeling pipeline, but note that they are not the only way to parameterize this function. For instance, the TRB's NHCRP Report 716: Travel Demand Forecasting Parameters and Techniques provides various coefficients estimated using the 1985 Highway Capacity Manual \citep[p.~75]{transportation_research_board_highway_1985,transportation_research_board_travel_2012}.
 
 \bigskip
 Given this function, we define the coefficients $a_0$, $a_1$, $a_2$, and $a_3$ as:
@@ -152,7 +153,7 @@ We use the shapefile of Traffic Analysis Zones (TAZs) from the Bay Area Metropol
 
 \bigskip
 \begin{equation}
-    \delta_{gc} = r\cdot arccos(\sin{\Phi_1} \sin{\Phi_2} + \cos{\Phi_1} \cos{\Phi_2} \cos{|\lambda_1 - \lambda_2|})
+    \delta_{gc} = r\cdot \arccos{(\sin{\Phi_1}\cdot\sin{\Phi_2} + \cos{\Phi_1}}\cdot\cos{\Phi_2}\cdot\cos{|\lambda_1 - \lambda_2|})
     \label{eq:haversine_formula}
 \end{equation}
 

@@ -1,7 +1,32 @@
 \subsection{Overview}
+The traffic assignment component is used to provide vehicles in the network specific paths in order for these vehicles to make trips between their origins and destinations (ODs). The origins, destinations, and number of vehicles making trips are received from ActivitySim and then assigned to specific network links through traffic assignment. The resulting path assignment results in a total number of vehicles travelling on each link in the transportation network, which is then used to compute a travel time on each link. The travel time on a link is a function of the number of vehicles using that link. These travel times are then given back to ActivitySim and used as "congestion skims." 
+
+
 \subsection{Inputs}
+The primary inputs used by the traffic assignment model are the network (including the associated origin-destination demand), and BPR coefficients associated with each link. These inputs are described in detail in \Cref{network}.
+[both of these subsections are discussed in detail in the network section... rather than duplicate content, refer back to that and explain how they fit into the TA model]
+
+
 \subsubsection{The network}
+\todoEmily{math description of a path}
+The network infrastructure is based on a set of nodes and edges in which connected edges share a node. Vehicles are allowed to travel from one edge to another if the edges are connected via node. The ordered set of these edges (in which the ordering denotes a shared node between two edges) are called a path. In order for vehicles to move from their origin to their destination, they must take a particular path. The possible paths between origins and destinations are defined by the topology of the network (i.e. the number of edges, the number of nodes, and the connections between nodes and edges). The network described in \Cref{network} is used as the foundation of the traffic assignment model. \todoEmily{read network section and make sure demands and associated ODs are described in a way that is consistent with this section}
+
+
 \subsubsection{BPR coefficients}
+The BPR coefficients computed previously are used to assign a pseudo travel time to each link as a function of the link's load (i.e. number of vehicles on the link). This is necessary in order to determine which paths vehicles should be assigned to (since vehicles are more likely to take a path which requires less time).
+
+
 \subsection{How it works/what it does}
+The currently implemented version of the traffic assignment model determines a static user equilibrium using the Frank-Wolfe algorithm. Static traffic assignment does not consider time varying parameters of any kind so there is no concept of \enquote{flow dynamics} but there is a well defined equilibrium. Static user equilibrium, often called Wardrop’s first principle in the transportation literature, is a well defined state in which all vehicles take the shortest path from their origin to their destination. The resulting traffic assignment is based on shortest paths that are calculated while considering the travel times resulting from a loaded network in which each user is attempting to minimize their travel time. 
+Wardrop's first principle states that the actual travel time experienced by a user in the network is equal or less than the travel time that the same driver would experience on any other route. User equilibrium is equivalent to Nash equilibrium.
+\todoEmily{cite wardrop}
+\todoEmily{define SUE in math} To perform this static user equilibrium calculation we use the Frank-Wolfe algorithm. \todoEmily{add some pseudocode and a short narrative about FW}
+
+
 \subsection{Outputs}
+\todoEmily{explain to what extent the resulting travel times are travel times }
+From the traffic assignment model, we obtain the number of vehicles on each link in the network and the resulting travel time (calculated using the BPR coefficient) of each link. These travel times are used to generate "congestion skims" in which the congestion on each link in the network is known, and therefore areas of high versus low congestion can be specified. These outputs are used by ActivitySim. \todoEmily{Read the activitysim section and make sure this is cohesive with what was said there. Add figures.} \todoEmily{edge weights for pandana to calculate accessibility - even if it's not exactly time, comparatively still useful }
+
+
 \subsection{Calibration and validation}
+In its current implementation, the traffic assignment model is static - meaning that back propagation of congestion and other time dependent phenomena observed in real transportation networks cannot be well modelled. However, the resulting travel times due to loading on each link can be compared with real data to understand how well the static approximation matches with the observed travel times on a network. \todoEmily{explain how to compare static model and non-static observed data - Flow}
