@@ -36,24 +36,6 @@
 \newcommand{\todoGeoff}[1]{\todo[inline,color=blue!30!white]{Geoff: #1}}
 \newcommand{\todoPaul}[1]{\todo[inline,color=purple!30!white]{Paul: #1}}
 
-\newcommand{\tight}{\itemsep 0pt}
-\newcommand{\squishlist}{
-   \begin{list}{$\bullet$}
-    { \setlength{\itemsep}{0pt}      \setlength{\parsep}{3pt}
-      \setlength{\topsep}{3pt}       \setlength{\partopsep}{0pt}
-      \setlength{\leftmargin}{1.5em} \setlength{\labelwidth}{1em}
-      \setlength{\labelsep}{0.5em} } }
-
-\newcommand{\squishlisttwo}{
-   \begin{list}{$\bullet$}
-    { \setlength{\itemsep}{0pt}    \setlength{\parsep}{0pt}
-      \setlength{\topsep}{0pt}     \setlength{\partopsep}{0pt}
-      \setlength{\leftmargin}{2em} \setlength{\labelwidth}{1.5em}
-      \setlength{\labelsep}{0.5em} } }
-
-\newcommand{\squishend}{
-    \end{list}  }
-
 
 
 \title{An Integrated Pipeline Architecture for Modeling Urban Land Use, Travel Demand, and Traffic Assignment}
@@ -67,31 +49,28 @@
 
 \date{December 2017}
 
-
-
 \begin{document}
 
 \maketitle
 
 \begin{abstract}
 This technical report constitutes the FY18 Q1 deliverable for the U.S. Department of Energy SMART Mobility Urban Science Pillar task 2.2.2.2018: Coupling Land Use Models and Network Flow Models. Integrating land use, travel demand, and traffic models represents a gold standard for regional planning, but is rarely achieved in a meaningful way, especially at the scale of disaggregate data. In this report, we present a new pipeline architecture for integrated modeling of urban land use, travel demand, and traffic assignment. Our land use model, UrbanSim, is an open-source microsimulation platform used by metropolitan planning organizations worldwide for modeling the growth and development of cities over long ($\sim$30 year) time horizons. UrbanSim is particularly powerful as a scenario analysis tool, enabling planners to compare and contrast the impacts of different policy decisions on long term land use forecasts in a statistically rigorous way. Our travel demand model, ActivitySim, is an agent-based modeling platform that produces synthetic origin--destination travel demand data. Finally, we use a static user equilibrium traffic assignment model based on the Frank Wolfe algorithm to assign vehicles to specific network paths to make trips between these origins and destinations. This traffic assignment model runs in a high-performance computing environment. The resulting congested travel time data can then be fed back into UrbanSim and ActivitySim for the next model run. This report introduces this research area, describes this project's achievements so far in developing this integrated pipeline, and presents an upcoming research agenda.
-
 \end{abstract}
 
+\tableofcontents
+\newpage
+
 \section{Introduction}
-\todoPaul{Paul leads, all contribute individual paragraphs on request}
+\todoPaul{Paul section, others contribute individual paragraphs upon request}
 \import{sections/}{1_intro.tex}
 
 \section{Long-term land use model: UrbanSim}
-\todoPaul{Paul section - preliminary draft in place}
 \import{sections/}{2_urbansim.tex}
 
 \section{Short-term travel demand model: ActivitySim}
-\todoMax{Max section}
 \import{sections/}{3_activitysim.tex}
 
 \section{Network}
-\todoGeoff{Geoff section}
 \import{sections/}{4_network.tex}
 
 \section{Traffic assignment model: static user equilibrium}
@@ -99,13 +78,8 @@ This technical report constitutes the FY18 Q1 deliverable for the U.S. Departmen
 \import{sections/}{5_ta.tex}
 
 \section{Conclusion}
-\todoGeoff{[Geoff leads, all contribute individual paragraphs on request]}
 \import{sections/}{6_conclusion.tex}
 
-
-% put the bibliography into the table of contents
-\clearpage
-\addcontentsline{toc}{chapter}{Bibliography}
 \printbibliography
 
 \end{document}
