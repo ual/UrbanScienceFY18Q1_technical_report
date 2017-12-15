@@ -1,7 +1,9 @@
 \subsection{Overview}
+
 ActivitySim is an agent-based modeling (ABM) platform for modeling travel demand. Like UrbanSim, the ActivitySim software is entirely open source, and hosted as a part of the Urban Data Science Toolkit at  https://github.com/UDST. ActivitySim grew in large part out of a need for municipal planning organizations (MPOs) to standardize the modeling tools and methods that were common between them in order to facilitate more effective collaboration and sharing of innovations. Today, ActivitySim is both used and maintained by an extremely active consortium of MPOs, transportation engineers, and other industry practitioners. Because of the cooperative approach taken by ActivitySim stakeholders towards its ownership, and because many of its "owners" are also its main users, the platform continues to mature in the direction that most benefits the practitioners themselves. ActivitySim development is still in Beta, with an official 1.0 release scheduled for 2018.
 
 \subsection{Inputs}
+
 ActivitySim requires two main sets of input data, one relating to geography and the other to the population of synthetic agents whose travel choices are being modeled. 
     
 The geographic data is stored at the level of the traffic analysis zone (TAZ) and is comprised of three components: 1) land use characteristics; 2) a matrix of zone-to-zone travel impedances (travel times, distances, or costs) specific to the mode of travel and time of day; and 3) a table of user-defined measures of aggregate utility estimated for each zone. In transportation planning, the zone-level impedances and utility measures are commonly referred to as \textit{skims} and \textit{accessibilities}, respectively. 
@@ -17,24 +19,28 @@ The second set of ActivitySim input data is the synthetic population. The synthe
 The specifics (field names, file formats, etc.) of the ActivitySim data schema are well documented and available here [https://udst.github.io/activitysim/dataschema.html]
 
 \subsection{How it works and what it does}
+
 ActivitySim, like UrbanSim, relies heavily on discrete choice models and Random Utility Maximization theory \citep{mcfadden-1974}. Please refer to the relevant UrbanSim sections above for specific details about how discrete choice models work within an agent-based microsimulation framework.
 
-An ActivitySim run consists of a series of model steps executed sequentially. The individual models can be grouped into the four clusters -- long term decisions, coordinated daily activity patterns, tour-level decisions, and trip-level decisions -- described below:
+An ActivitySim run consists of a series of model steps executed sequentially. The individual models can be grouped into the four clusters -- long term decisions, coordinated daily activity patterns, tour-level decisions, and trip-level decisions -- illustrated in Figure 7 and described below:
 \begin{enumerate}[label=(\roman*)]
     \item \textit{Long Term Choice Models}: ActivitySim's three long-term choice models -- workplace location choice, school location choice, and auto-ownership -- model the choices that are not made every day in the real world but have an impact on those that are. These models will eventually be migrated to run directly from the UrbanSim environment so that the time horizons of the two simulation platforms are internally consistent.
-    \item \textit{Coordinated Daily Activity Patterns}: 
+    \item \textit{Coordinated Daily Activity Patterns}: CDAP models include a single model that mimics the group decision-making process for household members seeking to maximize the utility of their daily activities, along with models for scheduling the frequency, duration, and departure times of mandatory and non-mandatory tours. Tours refer to a trip chain
     \item \textit{Tour-level Decisions}:
     \item \textit{Trip-level Decisions}:
 \end{enumerate}
 
  
 \begin{figure}[ht]
-\center
- \includegraphics[width=12cm]{graphics/asim_flow.png}
-\caption{ActivitySim Model Flow [adapted from http://analytics.mtc.ca.gov/foswiki/bin/view/Main/ModelSchematic]}
-\label{fig:asim-models}
+    \center
+    \includegraphics[width=\textwidth]{graphics/asim_flow.png}
+    \caption{ActivitySim model flow adapted from http://analytics.mtc.ca.gov/foswiki/bin/view/Main/ModelSchematic}
+    \label{fig:asim-models}
 \end{figure}
+
 \subsection{Outputs}
+
 The output of an ActivitySim run consists of a single HDF5 data file with a single table of results corresponding to each model step, along with the versions of the input files in their final, updated states. For the purpose of generating travel demand for traffic assignment, however, we are only concerned with the output of the trip generation step. This single file contains the origin and destination zones, start and end times, and mode choice for every trip taken by every agent over the course of a day. We then take the subset of these trips that are completed by automobile and aggregate the counts by origin-destination pair and hour of departure. These hourly, zone-level demand files are finally handed off for use in traffic assignment.
 
 \subsection{Calibration and validation}
+

@@ -31,6 +31,8 @@
 \addbibresource{references.bib}
 \addbibresource{refs-network.bib}
 
+\renewcommand{\thesection}{\arabic{section}}
+
 \newcommand{\todoMax}[1]{\todo[inline,color=green!30!white]{Max: #1}}
 \newcommand{\todoEmily}[1]{\todo[inline,color=red!30!white]{Emily: #1}}
 \newcommand{\todoGeoff}[1]{\todo[inline,color=blue!30!white]{Geoff: #1}}
@@ -54,7 +56,7 @@
 \maketitle
 
 \begin{abstract}
-This technical report constitutes the FY18 Q1 deliverable for the U.S. Department of Energy SMART Mobility Urban Science Pillar task 2.2.2.2018: Coupling Land Use Models and Network Flow Models. Integrating land use, travel demand, and traffic models represents a gold standard for regional planning, but is rarely achieved in a meaningful way, especially at the scale of disaggregate data. In this report, we present a new pipeline architecture for integrated modeling of urban land use, travel demand, and traffic assignment. Our land use model, UrbanSim, is an open-source microsimulation platform used by metropolitan planning organizations worldwide for modeling the growth and development of cities over long ($\sim$30 year) time horizons. UrbanSim is particularly powerful as a scenario analysis tool, enabling planners to compare and contrast the impacts of different policy decisions on long term land use forecasts in a statistically rigorous way. Our travel demand model, ActivitySim, is an agent-based modeling platform that produces synthetic origin--destination travel demand data. Finally, we use a static user equilibrium traffic assignment model based on the Frank Wolfe algorithm to assign vehicles to specific network paths to make trips between these origins and destinations. This traffic assignment model runs in a high-performance computing environment. The resulting congested travel time data can then be fed back into UrbanSim and ActivitySim for the next model run. This report introduces this research area, describes this project's achievements so far in developing this integrated pipeline, and presents an upcoming research agenda.
+This technical report constitutes the FY18 Q1 deliverable for the U.S. Department of Energy SMART Mobility Urban Science Pillar task 2.2.2.2018: Coupling Land Use Models and Network Flow Models. Integrating land use, travel demand, and traffic models represents a gold standard for regional planning, but is rarely achieved in a meaningful way, especially at the scale of disaggregate data. In this report, we present a new pipeline architecture for integrated modeling of urban land use, travel demand, and traffic assignment. Our land use model, UrbanSim, is an open-source microsimulation platform used by metropolitan planning organizations worldwide for modeling the growth and development of cities over long ($\sim$30 year) time horizons. UrbanSim is particularly powerful as a scenario analysis tool, enabling planners to compare and contrast the impacts of different policy decisions on long term land use forecasts in a statistically rigorous way. Our travel demand model, ActivitySim, is an agent-based modeling platform that produces synthetic origin--destination travel demand data. Finally, we use a static user equilibrium traffic assignment model based on the Frank-Wolfe algorithm to assign vehicles to specific network paths to make trips between these origins and destinations. This traffic assignment model runs in a high-performance computing environment. The resulting congested travel time data can then be fed back into UrbanSim and ActivitySim for the next model run. This report introduces this research area, describes this project's achievements so far in developing this integrated pipeline, and presents an upcoming research agenda.
 \end{abstract}
 
 \tableofcontents
@@ -70,7 +72,7 @@ This technical report constitutes the FY18 Q1 deliverable for the U.S. Departmen
 \section{Short-term travel demand model: ActivitySim}
 \import{sections/}{3_activitysim.tex}
 
-\section{Network}
+\section{Road network}
 \import{sections/}{4_network.tex}
 
 \section{Traffic assignment model: static user equilibrium}
@@ -80,6 +82,6 @@ This technical report constitutes the FY18 Q1 deliverable for the U.S. Departmen
 \section{Conclusion}
 \import{sections/}{6_conclusion.tex}
 
-\printbibliography
+\printbibliography[title=References]
 
 \end{document}
