@@ -60,33 +60,34 @@ The original design of UrbanSim adopted several elements to address these implem
 The key features of the UrbanSim model and its software implementation are highlighted in Table \ref{tab:key-features}. The model departs from prior operational land use models based on cross-sectional, equilibrium, aggregate approaches to adopt an approach that models individual households, jobs, buildings and parcels (or census blocks or zones), and their changes from one year to the next as a consequence of economic changes, policy interventions, and market interactions.
 
 \begin{table}[htbp]
-    \caption{Key features of UrbanSim}
-    \label{tab:key-features}
-    \begin{center}
-    \begin{tabular}{ p{0.25\textwidth} p{0.75\textwidth} }
+\caption{Key features of UrbanSim}
+\label{tab:key-features}
+\begin{center}
+\begin{tabular}{ p{0.2\textwidth} p{0.7\textwidth} }
     \toprule
     
-    \multirow[c]{10}{0.25\textwidth}{Key Features of the UrbanSim Model System} & $\bullet$ The model simulates the key decision makers and choices impacting urban development; in particular, the mobility and location choices of households and businesses, and the development choices of developers\\
-    & $\bullet$ The model explicitly accounts for land, structures (houses and commercial buildings), and occupants (households and businesses)\\
-    & $\bullet$ The model simulates urban development as a dynamic process over time and space, as opposed to a cross-sectional or equilibrium approach\\
-    & $\bullet$ The model simulates the land market as the interaction of demand (locational preferences of businesses and households) and supply (existing vacant space, new construction, and redevelopment), with prices and rents adjusting to clear market\\
+    \multirow[c]{10}{0.2\textwidth}{Key features of the UrbanSim model system}
+    & $\bullet$ Simulates the key decision makers and choices impacting urban development; in particular, the mobility and location choices of households and businesses, and the development choices of developers\\
+    & $\bullet$ Explicitly accounts for land, structures (houses and commercial buildings), and occupants (households and businesses)\\
+    & $\bullet$ Simulates urban development as a dynamic process over time and space, as opposed to a cross-sectional or equilibrium approach\\
+    & $\bullet$ Simulates the land market as the interaction of demand (locational preferences of businesses and households) and supply (existing vacant space, new construction, and redevelopment), with prices and rents adjusting to clear market\\
     & $\bullet$ Housing markets are separated by tenure (owner and rental) as well as building type to represent the key differences on housing affordability and the impacts of increases in property values on the occupants of housing\\
-    & $\bullet$ Housing supply decisions are modeled at the parcel level using development feasibility analysis (pro forma models) used to evaluate the return on investment of a development project, considering its hard and soft costs as well as expected revenues from sale or from a stream of rents, discounted to the present\\
-    & $\bullet$ The model incorporates governmental policy assumptions explicitly, and evaluates policy impacts by modeling market responses\\
-    & $\bullet$ The model is based on random utility theory and uses logit models for the implementation of key demand components\\
-    & $\bullet$ The model is designed for high levels of spatial and activity disaggregation, with a zonal system identical to travel model zones\\
-    & $\bullet$ The model presently addresses both new development and redevelopment, using parcel-level detail\\
+    & $\bullet$ Models housing supply decisions at the parcel level using development feasibility analysis (pro forma models) used to evaluate the return on investment of a development project, considering its hard and soft costs as well as expected revenues from sale or from a stream of rents, discounted to the present\\
+    & $\bullet$ Incorporates governmental policy assumptions explicitly, and evaluates policy impacts by modeling market responses\\
+    & $\bullet$ Based on random utility theory and uses logit models for the implementation of key demand components\\
+    & $\bullet$ Designed for high levels of spatial and activity disaggregation, with a zonal system identical to travel model zones\\
+    & $\bullet$ Presently addresses both new development and redevelopment, using parcel-level detail\\
     
     \midrule
     
-    \multirow[c]{3}{0.25\textwidth}{Key Features of the UrbanSim Software Implementation}
+    \multirow[c]{3}{0.2\textwidth}{Key features of the UrbanSim software implementation}
     & $\bullet$ The model system runs on the cloud and uses a web browser for the User Interface\\
-    & $\bullet$ The UrbanSim model system software is Open Source, at https://github.com/UDST/urbansim\\
+    & $\bullet$ The UrbanSim model system software is open source, at https://github.com/UDST/urbansim\\
     & $\bullet$ The user interface focuses on creating, running and evaluating policy scenarios\\
     
     \bottomrule
-    \end{tabular}
-    \end{center}
+\end{tabular}
+\end{center}
 \end{table}
 
 \subsection{Intended uses of the model system}
@@ -187,10 +188,10 @@ The data inputs and outputs for operating the UrbanSim model are shown in Table 
     \caption{Data inputs and outputs of UrbanSim}
     \label{tab:inputs-outputs}
     \begin{center}
-    \begin{tabular}{ p{0.3\textwidth} p{0.7\textwidth} }
+    \begin{tabular}{ p{0.25\textwidth} p{0.7\textwidth} }
     \toprule
     
-    \multirow{9}{0.3\textwidth}{UrbanSim Inputs}
+    \multirow{9}{0.25\textwidth}{UrbanSim inputs}
     & $\bullet$ Employment data, usually in the form of geocoded business establishments, but alternatively from zonal employment by sector\\
     & $\bullet$ Household data, merged from multiple census sources\\
     & $\bullet$ Parcel database, with acreage, land use, housing units, non-residential square footage, year built, land value, improvement value, city and county\\
@@ -203,7 +204,7 @@ The data inputs and outputs for operating the UrbanSim model are shown in Table 
     
     \midrule
     
-    \multirow{6}{0.3\textwidth}{UrbanSim Outputs summarized by Parcel, Census Block, Traffic Analysis Zone, and Municipality}
+    \multirow{6}{0.25\textwidth}{UrbanSim outputs summarized by parcel, census block, traffic analysis zone, and municipality}
     & $\bullet$ Households by income, age, size, and presence of children\\
     & $\bullet$ Employment by industry and land use type\\
     & $\bullet$ Acreage by land use\\
@@ -213,7 +214,7 @@ The data inputs and outputs for operating the UrbanSim model are shown in Table 
     
     \midrule
     
-    \multirow{4}{0.3\textwidth}{Travel Model Outputs (Zone-to-Zone) Used in UrbanSim}
+    \multirow{4}{0.25\textwidth}{Travel model outputs (zone-to-zone) used in UrbanSim}
     & $\bullet$ Travel time by mode by time of day by purpose\\
     & $\bullet$ Trips by mode by time of day by purpose\\
     & $\bullet$ Composite utility of travel using all modes by purpose \\

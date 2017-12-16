@@ -8,36 +8,34 @@ The network data in this modeling pipeline come from OpenStreetMap. OpenStreetMa
 
 The network is created using OSMnx, an open-source Python package for working with OpenStreetMap data \citep{boeing_osmnx:_2017}. OSMnx is built on top of NetworkX, a Python package for network analysis developed by researchers at Los Alamos National Laboratory. OSMnx extends NetworkX's network analysis capabilities by working explicitly with spatial infrastructure networks and interfacing with OpenStreetMap's various APIs. It can automatically construct topologically-corrected nonplanar directed multigraphs constrained to any polygonal boundaries for anywhere in the world from OpenStreetMap data. OSMnx uses a multistep algorithm to simplify the topology of the graph so that it retains nodes only at intersections and dead-ends, as well as the full geometry of the simplified edges, as shown in Figure \ref{fig:simplification_before_after}.
 
-\begin{figure}[ht]
-\center
-\includegraphics[width=\textwidth]
-{graphics/simplification_before_after.png}
-\caption{A suburban street network from OpenStreetMap data before OSMnx topology simplification (left) and after (right), with nodes in black and edges in gray. Note that the full spatial geometry is retained as edge metadata even though the edge itself is compressed to a single pair of origin and destination nodes.}
-\label{fig:simplification_before_after}
+\begin{figure}[htbp]
+    \center
+    \includegraphics[width=\textwidth]
+    {graphics/simplification_before_after.png}
+    \caption{A suburban street network from OpenStreetMap data before OSMnx topology simplification (left) and after (right), with nodes in black and edges in gray. Note that the full spatial geometry is retained as edge metadata even though the edge itself is compressed to a single pair of origin and destination nodes.}
+    \label{fig:simplification_before_after}
 \end{figure}
 
 We use OSMnx to download the road network for the nine-county San Francisco Bay Area. We use the 2016 US Census Bureau TIGER/Line shapefile of United States counties to define the spatial extents of these nine counties: Alameda, Contra Costa, Marin, Napa, San Francisco, San Mateo, Santa Clara, Solano, and Sonoma. We use a convex hull around these geometries to get a single polygon for the spatial query – this prevents the query from discarding any network elements that fall within our study area but outside of a county's borders (for example, bridges over the San Francisco Bay).
 
 Next, we use OSMnx to download the drivable road network within this convex hull. OSMnx uses detailed metadata tags to identify which paths are drivable. It then constructs it into a graph. This initial graph contains 1.2 million nodes and 2.3 million edges. Next we filter the road network to retain only tertiary roads and larger. In OpenStreetMap terminology, the road types we retain comprise: motorway, motorway\textunderscore link, trunk, trunk\textunderscore link, primary, primary\textunderscore link, secondary, secondary\textunderscore link, tertiary, tertiary\textunderscore link, unclassified, and road. The \enquote{link} types are necessary to retain the connectors (such as on-ramps and off-ramps) between certain roads. The \enquote{road} type is standardly used in the OpenStreetMap community as a null value. The \enquote{unclassified} type technically refers to the British-style roads hierarchy, in which \enquote{unclassified} is the level below \enquote{tertiary} – that is, quaternary. However, it sometimes is used inconsistently in the United States, so we retain it for completeness.
 
-\begin{figure}[ht]
-\center
-\includegraphics[width=0.7\textwidth]
-{graphics/bay_area_network.png}
-\caption{The nine-county San Francisco Bay Area road network used in our modeling pipeline, created by OSMnx from OpenStreetMap data.}
-\label{fig:bay_area_road_network}
+\begin{figure}[htbp]
+    \center
+    \includegraphics[width=\textwidth]
+    {graphics/bay_area_network.png}
+    \caption{The nine-county San Francisco Bay Area road network used in our modeling pipeline, created by OSMnx from OpenStreetMap data.}
+    \label{fig:bay_area_road_network}
 \end{figure}
 
 After filtering out all edges not of these major types, we remove all isolated nodes then keep only the largest weakly connected component of the graph. Finally, we simplify the graph using OSMnx then save it to disk as a GraphML file. GraphML is a standard, XML-based file format for storing and exchanging complete graph structure data. Our final graph contains 31,000 nodes and 66,000 directed edges representing 20,000 kilometers of roads across 9 counties, as seen in Figure \ref{fig:bay_area_road_network}.
 
 \subsection{BPR coefficients calculation and assumptions}
-\todoEmily{explain what BPR are}
-\todoEmily{explain the BPR coefficients in either narrative or math}
-Once we have the final processed graph of the Bay Area road network, we calculate the BPR (Bureau of Public Roads) curves' coefficients $a_0$, $a_1$, $a_2$, $a_3$, and $a_4$ for it. The BPR function is defined as:
+To define the relationship between link travel time and link congestion we use the Bureau of Public Roads (BPR) congestion function. This BPR function has long been used by transportation engineers to model the increased time needed to traverse a link when congestion is high. Once we have the final processed graph of the Bay Area road network, we calculate the BPR  curves' coefficients $a_0$, $a_1$, $a_2$, $a_3$, and $a_4$ for it. The BPR function is defined as:
 
 \bigskip
 \begin{equation}
-    t_i = t0_i (1 + \alpha (\frac{v_i}{c_i}) ^ \beta)
+    t_i = t^0_i (1 + \alpha (\frac{v_i}{c_i}) ^ \beta)
     \label{eq:bpr_function}
 \end{equation}
 
@@ -46,19 +44,19 @@ where:
 
 \bigskip
 \begin{itemize}
-    \item $t_i$ represents the congested flow travel time on edge $i$
-    \item $t0_i$ represents the free-flow travel time on edge $i$
-    \item $v_i$ represents the volume of traffic on edge $i$ per unit of time (flow attempting to use edge $i$)
-    \item $c_i$ represents the capacity of edge $i$ per unit of time
-    \item $\alpha$ represents the alpha parameter
-    \item $\beta$ represents the beta parameter, the exponent of the power function
+    \item $t_i$ is the congested flow travel time on edge $i$
+    \item $t^0_i$ is the free-flow travel time on edge $i$
+    \item $v_i$ is the number of vehicles on edge $i$ per unit of time 
+    \item $c_i$ is the capacity (i.e. maximum number of vehicles) of edge $i$  per unit of time
+    \item $\alpha$ linearly increases the congested travel time w.r.t. the volume: capacity ratio
+    \item $\beta$ exponentially increases the congested travel time w.r.t. the volume: capacity ratio
 \end{itemize}
 
 \bigskip
 The alpha parameter was assigned a value of 0.15 in the original BPR curve, and the beta parameter was assigned a value of 4 in the original BPR curve. We adopt these default alpha and beta parameter values in this integrated modeling pipeline, but note that they are not the only way to parameterize this function. For instance, the TRB's NHCRP Report 716: Travel Demand Forecasting Parameters and Techniques provides various coefficients estimated using the 1985 Highway Capacity Manual \citep[p.~75]{transportation_research_board_highway_1985,transportation_research_board_travel_2012}.
 
 \bigskip
-Given this function, we define the coefficients $a_0$, $a_1$, $a_2$, and $a_3$ as:
+Given this function, we further define the coefficients $a_0$, $a_1$, $a_2$, and $a_3$ as:
 
 \bigskip
 \begin{itemize}
@@ -70,7 +68,7 @@ Given this function, we define the coefficients $a_0$, $a_1$, $a_2$, and $a_3$ a
 Finally, we calculate the cofficient $a_4$ as:
 
 \begin{equation}
-    a_4 = t0_i \frac{\alpha}{c_i ^ {\beta}}
+    a_4 = t^0_i \frac{\alpha}{c_i ^ {\beta}}
     \label{eq:bpr_a4_coefficient}
 \end{equation}
 
@@ -80,7 +78,7 @@ First, for each edge that is missing number of lanes data, we impute the value b
 
 \bigskip
 \begin{equation}
-    t0_i = \frac{d_i}{s_i}
+    t^0_i = \frac{d_i}{s_i}
     \label{eq:free_flow_travel_time}
 \end{equation}
 
@@ -89,9 +87,9 @@ where:
 
 \bigskip
 \begin{itemize}
-    \item $t0_i$ represents the free-flow travel time in seconds on edge $i$
-    \item $d_i$ represents distance, that is, the length of edge $i$ in units of meters
-    \item $s_i$ represents free-flow speed, that is, the maximum permitted speed of travel on edge $i$ in units of meters per second
+    \item $t^0_i$ represents free-flow travel time on edge $i$, [seconds]
+    \item $d_i$ represents the length of edge $i$, [meters]
+    \item $s_i$ represents free-flow speed (i.e. the maximum possible speed of travel) on edge $i$, [meters per second]
 \end{itemize}
 
 \bigskip
