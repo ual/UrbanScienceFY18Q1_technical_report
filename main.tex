@@ -1,4 +1,3 @@
-%\documentclass[onecolumn,12pt]{IEEEtran}
 \documentclass{report}
 
 \usepackage[utf8]{inputenc}
@@ -63,22 +62,28 @@ This technical report constitutes the FY18 Q1 deliverable for the U.S. Departmen
 \newpage
 
 \section{Introduction}
-\todoPaul{Paul section, others contribute individual paragraphs upon request}
+\label{sec:intro}
+\todoPaul{Paul section}
 \import{sections/}{1_intro.tex}
 
 \section{Long-term land use model: UrbanSim}
+\label{sec:urbansim}
 \import{sections/}{2_urbansim.tex}
 
 \section{Short-term travel demand model: ActivitySim}
+\label{sec:activitysim}
 \import{sections/}{3_activitysim.tex}
 
 \section{Road network}
+\label{sec:network}
 \import{sections/}{4_network.tex}
 
-\section{Traffic assignment model: static user equilibrium}
+\section{Traffic assignment model}
+\label{sec:ta}
 \import{sections/}{5_ta.tex}
 
-\section{Conclusion}
+\section{Discussion and Conclusion}
+\label{sec:conclusion}
 \import{sections/}{6_conclusion.tex}
 
 \printbibliography[title=References]
