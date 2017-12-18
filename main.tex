@@ -9,6 +9,7 @@
 \usepackage{dsfont}
 \usepackage{epsfig}
 \usepackage{fancyhdr}
+\usepackage{endnotes}
 \usepackage{graphics, graphicx}
 \usepackage{harvard}
 \usepackage{hyperref}
@@ -30,6 +31,7 @@
 \addbibresource{references.bib}
 \addbibresource{refs-network.bib}
 
+\let\footnote=\endnote
 \renewcommand{\thesection}{\arabic{section}}
 
 \newcommand{\todoMax}[1]{\todo[inline,color=green!30!white]{Max: #1}}
@@ -86,6 +88,12 @@ This technical report constitutes the FY18 Q1 deliverable for the U.S. Departmen
 \label{sec:conclusion}
 \import{sections/}{6_conclusion.tex}
 
+\clearpage
+\addcontentsline{toc}{section}{Notes}
+\theendnotes
+
+\clearpage
+\addcontentsline{toc}{section}{References}
 \printbibliography[title=References]
 
 \end{document}

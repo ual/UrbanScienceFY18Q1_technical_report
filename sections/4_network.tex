@@ -65,7 +65,7 @@ We calculate the coefficient $a_4$ as in Equation \ref{eq:bpr_a4_coefficient}:
     \label{eq:bpr_a4_coefficient}
 \end{equation}
 
-To calculate these coefficients, we require per-edge data about capacity and free-flow travel time. To assemble these data, we require information about edge lengths, free-flow speed, and number of lanes. We use OSMnx to calculate these edge lengths. OpenStreetMap contains sparse data per-edge on maximum permitted speed and number of lanes. When these data are missing, we infer or impute them as per the defaults in Tables \ref{table:free_flow_speed_defaults} and \ref{table:capacity_defaults}.
+To calculate these coefficients, we require per-edge data about capacity and free-flow travel time. To assemble these data, we require information about edge lengths, free-flow speed, and number of lanes. We use OSMnx to calculate these edge lengths. OpenStreetMap contains sparse data per-edge on maximum permitted speed and number of lanes. When these data are missing, we infer or impute them as per the defaults\footnote{The authors wish to thank Madeleine Sheehan and Alexander Skabardonis for providing us with some of these values.} in Tables \ref{table:free_flow_speed_defaults} and \ref{table:capacity_defaults}.
 
 First, for each edge that is missing number of lanes data, we impute the value based on its edge type (which OpenStreetMap always provides as metadata). We calculate this imputed value by taking the median value of all edges of this type. Second, for each edge that is missing maximum permitted speed data, we infer the free-flow speed from a look-up table via edge type and number of lanes (see Table \ref{table:free_flow_speed_defaults}). We can now calculate free-flow travel time per edge as a function of free-flow speed and edge length, as defined in Equation \ref{eq:free_flow_travel_time}:
 
@@ -84,7 +84,7 @@ where:
 
 Next, we infer each edge's vehicle capacity (per lane per hour) from a look-up table via edge type and number of lanes (see Table \ref{table:capacity_defaults}). We then convert this capacity per lane per hour value to units of capacity per edge per second. Finally, we use these data to calculate the values of the $a0$ and $a4$ coefficients for the BPR curve. These calculations demand a caveat: due to missing data on OpenStreetMap, we are forced to infer or impute variables on many edges. Our assumptions on parameter values and capacity and speed limit defaults propagate through to our BPR coefficients.
 
-\begin{table}[ht]
+\begin{table}[htbp]
 \centering
 \caption{Free-flow speed defaults by edge type and number of lanes, in units of miles per hour.}
 \label{table:free_flow_speed_defaults}
@@ -108,7 +108,7 @@ Next, we infer each edge's vehicle capacity (per lane per hour) from a look-up t
 \end{tabular}
 \end{table}
 
-\begin{table}[ht]
+\begin{table}[htbp]
 \centering
 \caption{Capacity defaults by edge type and number of lanes, in units of vehicles per lane per hour.}
 \label{table:capacity_defaults}

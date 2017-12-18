@@ -3,9 +3,9 @@
 UrbanSim is an urban simulation system designed to inform deliberation on public choices with long-term, significant impacts. A key motivation for developing such a model system is that the urban environment
 is complex enough that it is not feasible to anticipate the effects of alternative courses of action without some form of analysis that could reflect the cause and effect interactions that could have both intended and unintended consequences.
 
-Consider a highway expansion project, for example. Traditional civil engineering training from the mid 20\textsuperscript{th} century suggested that the problem was a relatively simple one: excess demand meant that vehicles were forced to slow down, leading to congestion bottlenecks. The remedy was seen as easing the bottleneck by adding capacity, thus restoring the balance of capacity to demand. Unfortunately, as Downs (2004) has articulately explained, and most of us have directly observed, once capacity is added, it rather quickly gets used up, leading some to conclude that \enquote{you can't build your way out of congestion}.
+Consider a highway expansion project, for example. Traditional civil engineering training from the mid 20\textsuperscript{th} century suggested that the problem was a relatively simple one: excess demand meant that vehicles were forced to slow down, leading to congestion bottlenecks. The remedy was seen as easing the bottleneck by adding capacity, thus restoring the balance of capacity to demand. Unfortunately, as Downs (2004) has articulately explained, and most of us have directly observed, once capacity is added it is quickly used, leading some to conclude that \enquote{you can't build your way out of congestion}.
 
-The reason things are not as simple as the older engineering perspective would have predicted is that individuals and organizations adapt to changing circumstances. Once the new capacity is available, initially vehicle speeds do increase, but this drop in the time cost of travel on the highway allows drivers taking other routes to change to this now-faster route, or to change their commute to work from a less-convenient shoulder of the peak time to a mid-peak time, or switching from transit or car-pooling to driving alone, adding demand at the most desired time of the day for travel. Over the longer-term, developers take advantage of the added capacity to build new housing and commercial and office space, households and firms take advantage of the accessibility to move farther out where they can acquire more land and sites are less expensive.
+Highway congestion is a difficult problem The reason things are not as simple as the older engineering perspective would have predicted is that individuals and organizations adapt to changing circumstances. Once the new capacity is available, initially vehicle speeds do increase, but this drop in travel time on the highway allows drivers taking other routes to change to this now-faster route, or to change their commute to work from a less-convenient shoulder of the peak time to a mid-peak time, or to switch from transit or car-pooling to driving alone, adding demand at the most desired time of the day for travel. Over the longer-term, developers take advantage of the added capacity to build new housing and commercial and office space, households and firms take advantage of the accessibility to move farther out where they can acquire more land and sites are less expensive.
 
 In short, the urban transportation system is in a state of dynamic equilibrium, and when you perturb the equilibrium, the system, or more accurately, all the agents in the system, react in ways that tend to restore equilibrium. If there are faster speeds to be found to travel to desired destinations, people will find them.
 
@@ -82,7 +82,7 @@ The key features of the UrbanSim model and its software implementation are highl
     
     \multirow[c]{3}{0.2\textwidth}{Key features of the UrbanSim software implementation}
     & $\bullet$ The model system runs on the cloud and uses a web browser for the User Interface\\
-    & $\bullet$ The UrbanSim model system software is open source, at https://github.com/UDST/urbansim\\
+    & $\bullet$ The UrbanSim model system software is open source\footnote{The open-source UrbanSim code base is available at \url{https://github.com/UDST/urbansim}}\\
     & $\bullet$ The user interface focuses on creating, running and evaluating policy scenarios\\
     
     \bottomrule
@@ -155,7 +155,7 @@ One of the most common assumptions in models, and one rarely acknowledged, is th
 When models are applied at any geography larger than the parcel, such as census blocks, the building records are structured as aggregations of individual buildings, referred to below as building objects, with an aggregated unit count and square footage within the specific building type and block. Given the objectives of this project to support housing market modeling and urban planning, we propose to use a parcel-level specification of the data and models in UrbanSim. 
 
 
-\begin{figure}[htb]
+\begin{figure}[htbp]
     \center
     \includegraphics[width=\textwidth]{graphics/ParcelEmploymentModel.png}
     \caption{UrbanSim model flow: employment focus}
@@ -278,7 +278,9 @@ Choice models are implemented in UrbanSim in a modular way, to allow flexible sp
 
 For each model component within the UrbanSim model system, the choice process proceeds as shown in Figure \ref{fig:choiceprocess}. The first steps of the model read the relevant model specifications and data. Then a choice set is constructed for each chooser. Currently this is done using random sampling of alternatives, which has been shown to generate consistent, though not efficient, estimates of model parameters \citep{ben-akiva-lerman-1987}.
 
-The choice step in this algorithm warrants further explanation. Choice models predict choice probabilities, not choices. In order to predict choices given the predicted probabilities, we require an algorithm to select a specific choice outcome. A tempting approach would be to select the alternative with the maximum probability, but unfortunately this strategy would have the effect of selecting only the dominant outcome, and less frequent alternatives would be completely eliminated. In a mode choice model, for illustration, the transit mode would disappear, since the probability of choosing an auto mode is almost always higher than that of choosing transit. Clearly this is not a desirable or realistic outcome. In order to address this problem, the choice algorithm used for choice models uses a sampling approach. As illustrated in Figure \ref{fig:choiceprocess}, a choice outcome can be selected by sampling a random number from the uniform distribution in the range 0 to 1, and comparing this random draw to the cumulative probabilities of the alternatives. Whichever alternative the sampled random number falls within is the alternative that is selected as the \enquote{chosen} one. This algorithm has the property that it preserves in the distribution of choice outcomes a close approximation of the original probability distribution, especially as the sample size of choosers becomes larger.
+The choice step in this algorithm warrants further explanation. Choice models predict choice probabilities, not choices. In order to predict choices given the predicted probabilities, we require an algorithm to select a specific choice outcome. A tempting approach would be to select the alternative with the maximum probability, but unfortunately this strategy would have the effect of selecting only the dominant outcome, and less frequent alternatives would be completely eliminated. In a mode choice model, for illustration, the transit mode would disappear, since the probability of choosing an auto mode is almost always higher than that of choosing transit. Clearly this is not a desirable or realistic outcome.
+
+In order to address this problem, the choice algorithm used for choice models uses a sampling approach. As illustrated in Figure \ref{fig:choiceprocess}, a choice outcome can be selected by sampling a random number from the uniform distribution in the range 0 to 1, and comparing this random draw to the cumulative probabilities of the alternatives. Whichever alternative the sampled random number falls within is the alternative that is selected as the \enquote{chosen} one. This algorithm has the property that it preserves in the distribution of choice outcomes a close approximation of the original probability distribution, especially as the sample size of choosers becomes larger.
 
 \begin{figure}[htbp]
     \center
@@ -296,11 +298,12 @@ prices. This algorithm captures more realistically the feedback loop between exc
 to increase, which in turn, dampens demand as the submarket becomes relatively more expensive than other submarkets that
 are substitutes. This variant of the choice process is shown in Figure \ref{fig:choiceprocesswithprice}.
 
+One other choice context is worth noting. In some situations, the availability of alternatives may be constrained. If the limit on availability is entirely predictable, such as a budget constraint eliminating expensive options, or a zero-car household being unable to use the drive-alone mode, this is straightforward to handle, by eliminating the alternatives from the choice set for those choosers. 
 
-One other choice context is worth noting. In some situations, the availability of alternatives may be constrained. If the limit on availability is entirely predictable, such as a budget constraint eliminating expensive options, or a zero-car household being unable to use the drive-alone mode, this is straightforward to handle, by eliminating the alternatives from the choice set for those choosers. In other situations, however, the solution is not so straightforward. In the case where alternatives may be unavailable because many other agents wish to choose them, the problem is that the alternative may be unavailable due to the endogenous congestion of alternatives. The effect of this is potentially significant, since it may cause parameters estimated in a choice model to confuse, or confound, the effects of preferences with the effects of constraints. Fortunately, an estimation method has been developed to account for this problem \citep{depalma-jue-2007}.
+In other situations, however, the solution is not so straightforward. In the case where alternatives may be unavailable because many other agents wish to choose them, the problem is that the alternative may be unavailable due to the endogenous congestion of alternatives. The effect of this is potentially significant, since it may cause parameters estimated in a choice model to confuse, or confound, the effects of preferences with the effects of constraints. Fortunately, an estimation method has been developed to account for this problem \citep{depalma-jue-2007}.
 
 
-
+\todoPaul{the following subsections are still here, but you had left them blank thus far}
 \subsection{Inputs}
 \subsection{How it works and what it does}
 \subsection{Outputs}

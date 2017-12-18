@@ -35,8 +35,26 @@ Wardrop's first principle states that the actual travel time experienced by a us
     \end{split}
 \end{equation}
 
-The minimization is over travel time on each edge as a function of traffic volume. $x_{ij}^{r}$ is the number of vehicles on path $r$ from node $i$ to node $j$. $\alpha_{ij}^{ar}$ is equal to 1 if edge $a$ is contained in path $r$ and 0 otherwise. To perform this static user equilibrium calculation we use the Frank-Wolfe algorithm \citep{frank1956algorithm}. The Frank-Wolfe algorithm is a first-order optimization algorithm that is used to solve convex problems such as the static user equilibrium problem defined above.
+The minimization is over travel time on each edge as a function of traffic volume. $x_{ij}^{r}$ is the number of vehicles on path $r$ from node $i$ to node $j$. $\alpha_{ij}^{ar}$ is equal to 1 if edge $a$ is contained in path $r$ and 0 otherwise. To perform this static user equilibrium calculation we use the Frank-Wolfe algorithm \citep{frank1956algorithm}. The Frank-Wolfe algorithm is a first-order optimization algorithm that is used to solve convex problems such as the static user equilibrium problem defined above. The algorithm works as follows; consider a problem of the form:
 
+\begin{align*}
+    S \in \mathcal{R}^n \text{ a polyhedron and } f: \mathcal{R}^n \rightarrow \mathcal{R} C^1, \text{ solve:}
+\end{align*}
+
+\begin{align*}
+    \text{min. } f(x) \text{ subject to } x \in S
+\end{align*}
+
+Frank-Wolfe algorithm:
+
+\begin{enumerate}
+    \item Initialize with $x_0 \in S$ and let $k= 0$
+    \item Determine a search direction $d_k = y_k - x_k$ by solving the linear program: \\
+    $y_k \in \text{argmin}_{y \in S} \{ \nabla f(x_k)^Ty \} $
+    \item Determine a step length $\alpha_k \in [0.1]$ such that: \\
+    $f(x_k + \alpha_k d_k) = f((1 - \alpha)x_k + \alpha y_k) \leq f(x_k)$
+    \item Update $x_{k+1} = (1 - \alpha)x_k + \alpha y_k$ let $k = k+1$ and go to step 2
+\end{enumerate}
 
 \subsection{Outputs}
 
