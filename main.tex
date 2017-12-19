@@ -30,6 +30,7 @@
 \usepackage[backend=biber,style=authoryear,natbib=true,url=true,doi=true]{biblatex}
 \addbibresource{references.bib}
 \addbibresource{refs-network.bib}
+\addbibresource{accessibility.bib}
 
 \let\footnote=\endnote
 \renewcommand{\thesection}{\arabic{section}}
@@ -38,6 +39,7 @@
 \newcommand{\todoEmily}[1]{\todo[inline,color=red!30!white]{Emily: #1}}
 \newcommand{\todoGeoff}[1]{\todo[inline,color=blue!30!white]{Geoff: #1}}
 \newcommand{\todoPaul}[1]{\todo[inline,color=purple!30!white]{Paul: #1}}
+\newcommand{\todo}[1]{\todo[inline,color=white]{Comment: #1}}
 
 
 
@@ -65,7 +67,7 @@ This technical report constitutes the FY18 Q1 deliverable for the U.S. Departmen
 
 \section{Introduction}
 \label{sec:intro}
-\todoPaul{Paul section}
+%\todoPaul{Paul section}
 \import{sections/}{1_intro.tex}
 
 \section{Long-term land use model: UrbanSim}
